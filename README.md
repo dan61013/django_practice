@@ -199,16 +199,54 @@ cmd安裝:pip install djangorestframework
             ...
             path('api/', BboyListAPIViwe, name='api')
 ### RESTful API
-API: Application Programming Interface, 應用程式介面
+#### API: Application Programming Interface, 應用程式介面
 應用程式溝通之間的橋樑
 
 [參考網址](https://youtu.be/zvKadd9Cflc)
 
 餐廳舉例:
+
     進到餐廳的流程:
+
         1. 看菜單，準備點餐
         2. 請服務生來
         3. 服務生記住餐點
         4. 交給廚房
         5. 廚房製作料理，並送到我們的桌上
+
     ※ 菜單=前端頁面, 服務生=API, 廚房=後端, 上菜的桌面=渲染過的前端頁面
+
+#### RESTful
+REST, Representational State Transfer(表現層狀態轉移)
+
+更精準地說，是一種設計風格 - RESTful
+
+特徵: 
+
+    a. 統一介面 Uniform Interface
+    b. 無狀態 Stateless
+    c. 與客戶端分離 Client-Server
+
+1. 統一介面: 表示統一的api接口，通常為同一個資料來源定義URL
+2. 無狀態表示: 在沒有請求的情況為無狀態，在客戶端向server端發出請求時，一併將狀態method傳至server端
+   
+優點: 獨立、靈活，可以藉由客戶端請求不同狀態method, 來變更API的使用功能。且RESTful API不用儲存狀態，消除了伺服器的負載，可擴展性大幅提升。
+
+### 回歸DRF
+好用的APIview:
+
+    ※ CRDU (建立、讀取、刪除、更新)
+    1. generics.ListAPIView (偏向model based views)
+    2. Retrieve(): get single instance
+    3. Create: post instance(例子)
+    4. Destroy: delete instance
+    5. Update: put instance
+
+還可以複合使用，example: ListCreate, RetrieveUpdate, Mixin
+
+### Function Based View
+
+1. 到view.py底下，新增func
+   
+   主要是使用api_view()裝飾器，以及GET
+2. 再加入到urls.py，注意function不需要使用.as_view()

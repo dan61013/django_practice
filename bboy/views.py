@@ -3,8 +3,10 @@ from django.http import HttpResponse
 from .forms import BboyForm
 from django.shortcuts import redirect
 from .serializers import BboySerializer
-from rest_framework import generics
+from rest_framework import generics, status
 from .models import Bboy
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
 # Create your views here.
 
@@ -41,3 +43,15 @@ def form(request):
 class BboyListAPIView(generics.ListAPIView):
     queryset = Bboy.objects.all()
     serializer_class = BboySerializer
+    
+# from rest_framework.decorators import api_view
+# from rest_framework.response import Response
+# from rest_framework import status
+
+@api_view(['GET'])
+def Bboy_data(request):
+    if request.method == 'GET':
+        bboy = Bboy.objects.all()
+        serializer = BboySerializer(bboy, many=True)
+        
+        return Response(serializer.data)

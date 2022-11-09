@@ -1,0 +1,43 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from .forms import BboyForm
+from django.shortcuts import redirect
+from .serializers import BboySerializer
+from rest_framework import generics
+from .models import Bboy
+
+# Create your views here.
+
+def index(request):
+    return HttpResponse('Hello world!')
+
+def hello(request):
+    context = {
+        'name':'Dan'
+    }
+    return render(request, 'hello.html', context)
+
+def form(request):
+    # 定義class module為變數
+    form =  BboyForm()
+    
+    # 用if判斷傳送的method是POST
+    if request.method == 'POST':
+        # 再使用request.POST, 儲存表單內容
+        form - BboyForm(request.POST)
+        
+        # 並且使用is_valid來判斷資料是否有效
+        if form.is_valid():
+            form.save()
+            return redirect('/hello')
+    
+    context = {
+        'form':form,
+    }
+    
+    # 最後用render把context = form，渲染回去
+    return render(request, 'form.html', context)
+
+class BboyListAPIView(generics.ListAPIView):
+    queryset = Bboy.objects.all()
+    serializer_class = BboySerializer

@@ -38,7 +38,7 @@
         在model裡建立class人物
     d. 設定各個屬性
         [DateTimeField參考](https://docs.djangoproject.com/zh-hans/4.1/ref/models/fields/#datetimefield)
-        
+
         datetime.datetime，與DataField有一樣的額外參數
         class DateTimeField(auto_now=False, auto_now_add=False, **options)
 
@@ -47,7 +47,7 @@
             name: char
             age: int
             power: bool
-            bio: text
+            skills: text
             created_time: datetime
 ### 2. Migration
 資料遷移: 在django的model中，利用ORM的技術，將table換成class，而欄位化為其中的屬性，讓我們可以用ORM方式，來透過物件來操作、選取、變更資料
@@ -108,6 +108,7 @@
 ---
 ## Ch6. View
 基本要素: request & return
+
     1. 最基本功能: 接收請求，並且Return
     2. 功能可能是渲染畫面(render), 或HttpResponse, 以及自訂的Response
 
@@ -202,3 +203,12 @@ API: Application Programming Interface, 應用程式介面
 應用程式溝通之間的橋樑
 
 [參考網址](https://youtu.be/zvKadd9Cflc)
+
+餐廳舉例:  
+    進到餐廳的流程:  
+        1. 看菜單，準備點餐  
+        2. 請服務生來  
+        3. 服務生記住餐點  
+        4. 交給廚房  
+        5. 廚房製作料理，並送到我們的桌上  
+    ※ 菜單=前端頁面, 服務生=API, 廚房=後端, 上菜的桌面=渲染過的前端頁面

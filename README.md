@@ -38,6 +38,7 @@
         在model裡建立class人物
     d. 設定各個屬性
         [DateTimeField參考](https://docs.djangoproject.com/zh-hans/4.1/ref/models/fields/#datetimefield)
+        
         datetime.datetime，與DataField有一樣的額外參數
         class DateTimeField(auto_now=False, auto_now_add=False, **options)
 
@@ -166,6 +167,7 @@ Cross-Site Request Forgery(跨站請求攻擊)
 ---
 ## Ch8. Django Rest Framework, DRF
 [官方說明](https://www.django-rest-framework.org/)
+
 cmd安裝:pip install djangorestframework
 
 優點:

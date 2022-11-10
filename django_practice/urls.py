@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from bboy.views import index, hello, form, BboyListAPIView, Bboy_data, RegisterAPIView, LoginView
+from bboy.views import index, hello, form, BboyListAPIView, Bboy_data, \
+    RegisterAPIView, LoginView, LogoutAPIView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,4 +27,5 @@ urlpatterns = [
     path('fucapi/', Bboy_data, name='fucapi'),
     path('api/register/', RegisterAPIView.as_view(), name='Register API'),
     path('api/login/', LoginView.as_view(), name="Login API"),
+    path('api/logout/', LogoutAPIView.as_view(), name='Logout API'),
 ]

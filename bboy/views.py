@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .forms import BboyForm
 from django.shortcuts import redirect
+from .forms import BboyForm
 from .serializers import BboySerializer, RegisterSerializer, LoginSerializer
-from rest_framework import generics, status
 from .models import Bboy
+from rest_framework import generics, status, views
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 
 # Create your views here.
 
@@ -116,3 +116,10 @@ class LoginView(generics.GenericAPIView):
             'message':'Wrong username or password.'
         }, status=status.HTTP_400_BAD_REQUEST
                         )
+
+class LogoutAPIView(views.APIView):
+    
+    def get(self, request):
+        logout(request)
+        
+        return Response({'message':'logout successfully.'}, status=status.HTTP_200_OK)

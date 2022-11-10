@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import BboyForm
 from django.shortcuts import redirect
-from .serializers import BboySerializer
+from .serializers import BboySerializer, RegisterSerializer
 from rest_framework import generics, status
 from .models import Bboy
 from rest_framework.decorators import api_view
@@ -70,3 +70,25 @@ def Bboy_data(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+# GenericAPIView, 是一個可以自定義的api view，寫完必要的serializer_class之後，
+# 我們定義使用post method的功能
+class RegisterAPIView(generics.GenericAPIView):
+    
+    serializer_class = RegisterSerializer
+    
+    def post(self, request):
+        # 讓輸入的值成為serializer，可以使用data=request.data方式
+        serializer = self.serializer_class(data=request.data)
+        # 用is_valid來驗證serializer
+        if serializer.is_valid():
+            serializer.save()
+        
+            return Response(
+                {'message': 'Account has been created suceessfully.'},
+                status=status.HTTP_201_CREATED)
+            
+        return Response(
+            {'message': 'The input content is invalid.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )

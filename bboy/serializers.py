@@ -22,17 +22,20 @@ class BboySerializer(serializers.Serializer):
         if self.age < 0:
             raise serializers.ValidationError("Age must be bigger than 0!")
 
-class RegisterSerializer(serializers.ModelField):
+class RegisterSerializer(serializers.ModelSerializer):
     
+    # 利用UniqueValidator，來判斷是否為唯一值
     username = serializers.CharField(
         required = True,
         validators = [UniqueValidator(queryset=User.objects.all())]
     )
+    
+    # 使用2組password, 原因是要給使用者確認一次密碼，用validate_password來驗證兩次是否相同
     password = serializers.CharField(
         write_only = True,
         required = True,
         validators = [validate_password],
-        style = {'input_type': 'password'}
+        style = {'input_type': 'password'} # input_type, 會把密碼加以屏蔽
         )
     
     password2 = serializers.CharField(
@@ -47,8 +50,9 @@ class RegisterSerializer(serializers.ModelField):
     
     organization = serializers.CharField(max_length=100)
     
-    class Mata:
+    class Meta:
         
+        # model以User為主體，UserProfile是擴充包, 但在fields一樣要記得把擴充選項新增進去
         model = User
         fields = (
             'username', 'email', 'password', 'password2', 'phone', 'instagram', 'organization'
@@ -59,6 +63,8 @@ class RegisterSerializer(serializers.ModelField):
             raise serializers.ValidationError({"password":"Password fields didn't match."})
         return attrs
     
+    # 使用ORM (Object Relational Mapping) 的方式來create model instance，同時重新定義create，
+    # 另一方面我們也同時create UserProfile的 instance，並對應我們創建的User instance。
     def create(self, vaildated_data):
         user = User.objects.create(
             username = vaildated_data['username'],

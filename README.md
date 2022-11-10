@@ -245,8 +245,30 @@ REST, Representational State Transfer(表現層狀態轉移)
 還可以複合使用，example: ListCreate, RetrieveUpdate, Mixin
 
 ### Function Based View
+** serializers.ModelSerializer
 
 1. 到view.py底下，新增func
    
    主要是使用api_view()裝飾器，以及GET
 2. 再加入到urls.py，注意function不需要使用.as_view()
+
+#### 使用field方式
+    1. 使用class func_name(serializers.Serializer)，以及serializers.IntegerField, CharField, BooleanField等功能驗證
+    ** 有read_only, max_length... 可用
+    2. 此功能與ModelSerializer不同，不會有class Meta
+
+---
+# Ch9. 使用者註冊
+
+[Django原生auth.user](https://docs.djangoproject.com/en/4.1/ref/contrib/auth/#django.contrib.auth.models.User)
+
+原生user基本欄位:
+    1. username
+    2. last_name
+    3. first_name
+    4. email
+    5. password
+
+教程:
+
+    1. 在models.py新增user model

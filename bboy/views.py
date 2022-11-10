@@ -2,11 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .forms import BboyForm
 from django.shortcuts import redirect
-from .serializers import BboySerializer, RegisterSerializer
+from .serializers import BboySerializer, RegisterSerializer, LoginSerializer
 from rest_framework import generics, status
 from .models import Bboy
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
+from django.contrib.auth import login
 
 # Create your views here.
 
@@ -92,3 +94,25 @@ class RegisterAPIView(generics.GenericAPIView):
             {'message': 'The input content is invalid.'},
             status=status.HTTP_400_BAD_REQUEST
         )
+
+class LoginView(generics.GenericAPIView):
+    
+    serializer_class = LoginSerializer
+    
+    def post(self, request, format=None):
+        serializer = LoginSerializer(data=request.data, context={'request':self.request})
+        
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            login(request, user)
+            msg = {
+                'success':True,
+                'messgae':"Validation success"
+            }
+            return Response(msg, status=status.HTTP_202_ACCEPTED)
+        
+        return Response({
+            'success':False,
+            'message':'Wrong username or password.'
+        }, status=status.HTTP_400_BAD_REQUEST
+                        )

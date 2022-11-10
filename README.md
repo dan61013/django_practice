@@ -272,3 +272,28 @@ REST, Representational State Transfer(表現層狀態轉移)
 教程:
 
     1. 在models.py新增user model
+    2. 建立擴充User的UserProfile，並做1對1關聯
+
+    from django.db import models
+    from django.contrib.auth.models import User
+
+    class UserProfile(models.Model):
+        user = models.OneToOneField(User, on_delete=models.CASCADE)
+        phone = models.CharField(max_length=10, blank=True, null=True)
+        organization = models.CharField(max_length=100, blank=True, null=True)
+
+        def __str__(self):
+            return self.user.username
+        
+        3. Register API
+        先建立serializer, 然後再建立view，最後到urls新增連結
+        ※參考bboy>serializers.py & views.py
+
+---
+
+## 登入 & 登出
+### 登入
+    登入所需的資訊: username, password
+
+    1. 先從serializer開始編輯
+    2. 必須 from django.contrib.auth import authenticate

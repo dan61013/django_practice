@@ -4,6 +4,7 @@ from .models import Bboy, UserProfile
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth import authenticate
 
 # class BboySerializer(serializers.ModelSerializer):
 #     class Meta:
@@ -83,3 +84,41 @@ class RegisterSerializer(serializers.ModelSerializer):
         user.save()
         
         return user
+
+class LoginSerializer(serializers.Serializer):
+    # 先列出所需的欄位，再以其中的參數做驗證
+    username = serializers.CharField(
+        label = 'Username',
+        write_only = True
+    )
+    
+    password = serializers.CharField(
+        label = 'Password',
+        style = {'input_type':'password'},
+        trim_whitespace = False,
+        write_only = True
+    )
+    
+    # 先抓取欄位中填入的input, 並且把username, password配對，做authenticate驗證，確認user是否存在
+    # 依照結果給出對應的Response, 再回傳結果給return使用
+    def validate(self, attrs):
+        username = attrs.get('username')
+        password = attrs.get('password')
+        if username and password:
+            user = authenticate(request=self.context['request'], username=username, password=password)
+            
+            if not user:
+                msg = {
+                    'success':False,
+                    'message':'Wrong username or password'
+                }
+                raise serializers.ValidationError(msg)
+        else:
+            msg = {
+                'success':False,
+                'message':'Username and password are required.'
+            }
+            raise serializers.ValidationError(msg)
+        
+        attrs['user'] = user
+        return attrs

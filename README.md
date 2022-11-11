@@ -301,3 +301,13 @@ REST, Representational State Transfer(表現層狀態轉移)
 ### 登出
     只需要建立ViewAPI, 然後設定好urls即可
     ※ 先登入使用者→輸入Logout網址→再回到後台就會是登出的狀態 #
+
+## CRUD
+
+api主要也分為CRUD這四類，Create, Read, Update, Delete
+※ 對於後端來說，最重要的要點之一，就是提供資料的api給前端用
+實作CRUD的api製作
+
+    1. 建立好model, 還有serializer
+    2. 再到view，建立Generics.CreateAPIView
+    3. 共有兩個參數, queryset=model.objects.all(), serializers_class=model_serializer

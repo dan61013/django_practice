@@ -125,3 +125,7 @@ class LogoutAPIView(views.APIView):
         logout(request)
         
         return Response({'message':'logout successfully.'}, status=status.HTTP_200_OK)
+    
+class BboyCreateAPIView(generics.CreateAPIView):
+    queryset = Bboy.objects.all()
+    serializer_class = BboySerializer

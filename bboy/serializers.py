@@ -6,22 +6,22 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 
-# class BboySerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Bboy
-#         fields = '__all__'
+class BboySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bboy
+        fields = '__all__'
 
-class BboySerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    name = serializers.CharField(max_length=20)
-    age = serializers.IntegerField()
-    power = serializers.BooleanField()
-    skills = serializers.CharField(max_length=200)
+# class BboySerializer(serializers.Serializer):
+#     id = serializers.IntegerField(read_only=True)
+#     name = serializers.CharField(max_length=20)
+#     age = serializers.IntegerField()
+#     power = serializers.BooleanField()
+#     skills = serializers.CharField(max_length=200)
     
-    # 新增驗證功能
-    def validate_age(self):
-        if self.age < 0:
-            raise serializers.ValidationError("Age must be bigger than 0!")
+#     # 新增驗證功能
+#     def validate_age(self):
+#         if self.age < 0:
+#             raise serializers.ValidationError("Age must be bigger than 0!")
 
 class RegisterSerializer(serializers.ModelSerializer):
     

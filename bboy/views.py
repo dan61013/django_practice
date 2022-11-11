@@ -13,11 +13,13 @@ from django.contrib.auth import login, logout
 # Create your views here.
 
 def index(request):
-    return HttpResponse('Hello world!')
+    return HttpResponse('Dan 創立的測試網站')
 
 def hello(request):
     context = {
-        'name':'Dan'
+        'name':'Dan',
+        'skills':'windmill',
+        '星座':'獅子座',
     }
     return render(request, 'hello.html', context)
 

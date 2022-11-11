@@ -296,4 +296,8 @@ REST, Representational State Transfer(表現層狀態轉移)
     登入所需的資訊: username, password
 
     1. 先從serializer開始編輯
-    2. 必須 from django.contrib.auth import authenticate
+    2. 必須導入驗證function from django.contrib.auth import authenticate
+
+### 登出
+    只需要建立ViewAPI, 然後設定好urls即可
+    ※ 先登入使用者→輸入Logout網址→再回到後台就會是登出的狀態 #

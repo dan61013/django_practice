@@ -1,10 +1,13 @@
 # Django 2022 ithelp_note_by_Dan
 參考文章: [傳承D的意志~ 邁向Django的偉大航道](https://ithelp.ithome.com.tw/users/20151096/ironman/5130)
+Sean大的文章很清楚簡潔，不會有過多的圖片造成混亂，同時自己也要邊寫邊吸收，
+否則很容易miss掉一些小細節，而產生Error。
 
 ---
 
 ## Ch.1 MTV == MVC
-使用架構的優點是: 可以清楚分工(前、後端工程)
+Django是一個有完整架構的系統，
+而使用架構的優點主要是: 可以清楚分工(前、後端工程)
 ### 1. MTV
     Model: 資料模型，負責資料處理的工作(包含資料庫欄位設計)
     View: 訪客or使用者直觀所看到的畫面
@@ -22,20 +25,20 @@
 ## Ch.2 建立初始環境
 ### 1. install程式
     安裝anaconda, python and django
-    ** cmd: pip install django
+    cmd: pip install django
 ### 2. 建立專案
-    cmd輸入指令: django-admin startproject myproject_name
+    cmd: django-admin startproject project_name
 ### 3. 啟動專案
     py manage.py runserver
 ---
 ## Ch3. Model
 ### 1. App
-    a. 創立app
+    a. 建立app
         cmd: py manage.py startmyapp app_name
     b. 進入model
-        進入已經建立完成的app model
+        進入已經建立完成app的models.py
     c. 建立人物
-        在model裡建立class人物
+        在models裡建立class類別
     d. 設定各個屬性
         [DateTimeField參考](https://docs.djangoproject.com/zh-hans/4.1/ref/models/fields/#datetimefield)
 
@@ -51,26 +54,29 @@
             created_time: datetime
 ### 2. Migration
 資料遷移: 在django的model中，利用ORM的技術，將table換成class，而欄位化為其中的屬性，讓我們可以用ORM方式，來透過物件來操作、選取、變更資料
+** ORM: Object Relation Mapping (物件關聯對映)
+
 ** class, attribute(屬性)
 
-    a. app 註冊在settings.py
-        找到INSTALLED_APPS = []，並將app名稱登記在下方
+流程:
+    a. 把app註冊在settings.py
+        找到INSTALLED_APPS = [...,'app_name',]，並key入app名稱
     b. Migration
         cmd: py manage.py makemigrations
-        會在app底下產生migration資料夾，以及0001_initial.py
+        並且會在app底下產生migration資料夾，以及0001_initial.py (按照流水號產生)
     c. Migrate
         cmd: py manage.py migrate
-        該指令會將遷移剛才migration的app
+        該指令會將遷移剛才migration的app資料
 ---
 ## Ch4. 關聯資料庫(Relational Database)
-簡而言之，就是建立在關聯模型上的資料庫，可以使多個model之間有關聯屬性，主要有三種:
+簡述: 就是建立在關聯模型上的資料庫，可以讓多個model之間有關聯屬性，主要有三種:
     ● 一對多
     ● 多對一
     ● 多對多
 ### 關聯對應關係
-    Step1. 分析表
-        a. 左表的多條紀錄是否可對應右表的一條紀錄
-        b. 右表的多條紀錄是否可對應左表的一條紀錄
+    Step1. 分析表資料
+        a. 左表的多條紀錄是否可對應右表的一筆記錄
+        b. 右表的多條紀錄是否可對應左表的一筆紀錄
 
 #### 多對一 (ForeignKey)
     a. 若只有分析一成立，左表多對一右表，外來鍵foreign key創建在左表，關聯指向右表
@@ -79,7 +85,7 @@
     (右多左一，key建右，關聯指左)
 #### 一對一 (OneToOneField)
     若分析一及分析二皆不成立，則左表的一條紀錄唯一對應右表的一條紀錄。
-    此時，我們可以在左表設置OneToOneField，指向右表即可。
+    我們可以在左表設置OneToOneField，指向右表即可。
     在Django中，最常用於原生User & 客製化的UserProfile model中。
 #### 多對多 (ManyToManyField)
 若分析一及分析二同時成立，兩表為雙向多對一，即多對多。
@@ -87,18 +93,20 @@
 
 ---
 ## Ch5. 資料庫正規化
-資料庫正規化，是代表一個過程中，將資料庫描述實體資料的各表，依照程序，一個一個將其簡化，最後的理想是將每個表的核心，都簡化為僅單純描述一個特徵或事實。
+資料庫正規化，是代表一個過程中，將資料庫描述實體資料的各表，
+按照程序，將每一個簡化，最終的理想是將每個表的核心，都化為只單純描述一個特徵或事實。
 
 ### 使用資料正規化的目的:
     a. 增進資料儲存以及操作資料庫的效能
     b. 盡量減少資料發生異常的可能
-    c. 後續維護資料庫能夠變得更加容易
+    c. 後續維護資料庫能更容易
 
 ### 正規化之後的資料庫:
     a. 欄位原子性：每個欄位只儲存一筆資料
     b. 主鍵辨識：每筆資料都有一個主鍵，並以主鍵來做區分
     c. 關聯明確：表與表之間的關聯關係明確
     d. 欄位獨立：表與表的欄位之間沒有遞移相依的問題
+
     example:
         1. 去除重複性，讓每個儲存格資料都單一化
         2. 每個欄位的資訊，如果有其他關連(性質)，應該再拆分成N表，來做關聯
@@ -110,16 +118,16 @@
 基本要素: request & return
 
     1. 最基本功能: 接收請求，並且Return
-    2. 功能可能是渲染畫面(render), 或HttpResponse, 以及自訂的Response
+    2. 功能: 渲染畫面(render), 或HttpResponse, 以及自訂的Response
 
 ### django的運作邏輯是:
     由url的路徑來使用寫入的view，再由view的功能去渲染(render)我們的畫面
 
-    a. 先在app中的views新增一個function
+    a. 先在app中的views新增一個function, class
     b. 然後在到project底下的urls.py新增path
-    path('', function, name='function_name')
+    path('url/', function(or class.as_view()), name='自定義')
 
-### T, Template
+### Template (MTV的T)
 在django裡，就是html檔，主要用來顯示使用者畫面
 
     a. in app, views
@@ -128,12 +136,13 @@
             'name':'abc'
         }
         return render(request, 'hello.html', context)
-    b. in settings
+    b. 在settings.py
         新增path('hello/', function, name='function'
     c. 在manage.py同層，新增templates>hello.html
 
 ### Form表單
-在django中，主要有兩種使用表單的方式，form, ModelForm，ModelForm可以按照我們在model裡定義的欄位類型及參數，建立及驗證內容
+在django中，主要有兩種使用表單的方式，form, ModelForm，
+而ModelForm可以按照我們在model裡定義的欄位類型及參數，建立及驗證內容
 
 ※注意: 避免與django的models, forms衝突，在import其他module時，要使用"."，來區分
 
@@ -141,7 +150,7 @@
     b. from django import forms, and from .models import module_name
     c. 建立一個class
         class BboyForm(forms.ModelForm):
-            class Meta:
+            class Meta: # Meta是必要屬性
                 model = Bboy
                 fields = '__all__'
     ※ 如果要import指定項目:
@@ -307,7 +316,7 @@ REST, Representational State Transfer(表現層狀態轉移)
 api主要也分為CRUD這四類，Create, Read, Update, Delete
 ※ 對於後端來說，最重要的要點之一，就是提供資料的api給前端用
 實作CRUD的api製作
-
+### Create, use: Generics.CreateAPIView
     1. 建立好model, 還有serializer
     2. 再到view，建立Generics.CreateAPIView
     3. 共有兩個參數, queryset=model.objects.all(), serializers_class=model_serializer

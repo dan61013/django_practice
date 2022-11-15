@@ -3,12 +3,15 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from .forms import BboyForm
 from .serializers import BboySerializer, RegisterSerializer, LoginSerializer
+from .filters import BboyFilterSet
 from .models import Bboy
 from rest_framework import generics, status, views
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from django.contrib.auth import login, logout
+
+from django_filters.rest_framework import DjangoFilterBackend
 
 # Create your views here.
 
@@ -47,6 +50,8 @@ def form(request):
 class BboyListAPIView(generics.ListAPIView):
     queryset = Bboy.objects.all()
     serializer_class = BboySerializer
+    # 新增filterset_class
+    filterset_class = BboyFilterSet
     
 # from rest_framework.decorators import api_view
 # from rest_framework.response import Response

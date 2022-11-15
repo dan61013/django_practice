@@ -320,3 +320,18 @@ api主要也分為CRUD這四類，Create, Read, Update, Delete
     1. 建立好model, 還有serializer
     2. 再到view，建立Generics.CreateAPIView
     3. 共有兩個參數, queryset=model.objects.all(), serializers_class=model_serializer
+   
+### R
+    Read + Filter, get特定的object, 並搭配filter完成
+
+    [參考網址](https://django-filter.readthedocs.io/en/stable/guide/rest_framework.html#adding-a-filterset-with-filterset-class)
+
+    1. pip install django-filter
+    2. 在INSTALLED_APPS裡，新增"django_filters"
+    3. 在settings.py裡，新增
+    REST_FRAMEWORK = {
+        "DEFAULT_FILTER_BACKENDS" = ['django_filters.rest_framework.DjangoFilterBackend']
+    }
+    4. 在app資料夾底下，新增filters.py, 並import django_filters, FilterSet..., import module
+    5. 回到view, 在generics.ListAPIView, import剛才新增的filter module，並在底下新增:
+    filterset_class = the_filters_class_name

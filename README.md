@@ -335,3 +335,24 @@ api主要也分為CRUD這四類，Create, Read, Update, Delete
     4. 在app資料夾底下，新增filters.py, 並import django_filters, FilterSet..., import module
     5. 回到view, 在generics.ListAPIView, import剛才新增的filter module，並在底下新增:
     filterset_class = the_filters_class_name
+
+### U (Update)
+
+RESTful API, 可以利用無狀態特性，接收request中的method來改變功能
+
+#### PUT
+
+Update的功能，可以使用post或update的方式來實行，此次教程選擇使用put method實行
+使用之前建立的model以及serilizer，引用即可完成API
+
+    1. 新增以下功能 (Update & Delete同時存在)
+    from .models import your_module
+    from .serializers import your_serializer
+    from rest_framework import generics
+
+    class NameUpdateAPIView(generics.RetrieveUpdateDestroy)
+        queryset = Module.objects.all()
+        serializer_class = Your_module_name_serializer
+    2. 新增urls.py即完成
+
+

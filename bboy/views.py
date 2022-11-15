@@ -134,3 +134,7 @@ class LogoutAPIView(views.APIView):
 class BboyCreateAPIView(generics.CreateAPIView):
     queryset = Bboy.objects.all()
     serializer_class = BboySerializer
+    
+class BboyUpdateAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Bboy.objects.all()
+    serializer_class = BboySerializer
